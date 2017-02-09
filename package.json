@@ -2,9 +2,9 @@
   "name": "studyplanner",
   "description": "A study planner for students",
   "author": "Kevin Sarsen",
-  "email": "kevin.sarsen@protonmail.com",
-  "homepage": "https://github.com",
-  "version": "0.0.0",
+  "email": "kevinsarsen@gmail.com",
+  "homepage": "https://github.com/kevinsarsen/StudyPlanner",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
@@ -36,7 +36,7 @@
       "category": "Utility",
       "target": "deb",
       "synopsis": "test",
-      "maintainer": "kevinsarsen@protonmail.com"
+      "maintainer": "kevinsarsen@gmail.com"
     }
   }
 }

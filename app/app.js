@@ -11,11 +11,11 @@ var about = require('./about');
 var assignments = require('./user/tasks');
 var calendar = require('./user/calendar');
 var dashboard = require('./user/dashboard');
-var index = require('./routes/index');
+var index = require('./home/index');
 var schedule = require('./user/schedule');
 var search = require('./user/search');
 var settings = require('./user/settings');
-var users = require('./routes/users');
+var users = require('./services/users');
 
 var app = express();
 console.log("in app.js");
@@ -65,7 +65,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render(path.join(__dirname,'errors/error'));
 });
 
 
