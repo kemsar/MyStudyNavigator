@@ -25,8 +25,8 @@ app.disable('x-powered-by');
 
 console.log("engine setup");
 // view engine setup
-hbs.registerPartials(__dirname + '/views/partials');
-app.set('views', path.join(__dirname, 'views'));
+hbs.registerPartials(__dirname + '/common/partials');
+app.set('views', path.join(__dirname, 'common'));
 app.set('view engine', 'hbs');
 app.set('view options', { layout: '/layouts/main.hbs' });
 
@@ -71,24 +71,7 @@ app.use(function(err, req, res, next) {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
-var sqlite3 = require('sqlite3').verbose();
-var db = new sqlite3.Database('testDB.db');
-
-db.serialize(function() {
-  db.run("CREATE TABLE IF NOT EXISTS users (id TEXT, name TEXT, email TEXT, password TEXT)");
-  db.run("INSERT INTO users VALUES ('admin', 'Kevin Sarsen', 'kevinsarsen@protonmail.com', 'admin')");
-  // var stmt = db.prepare("INSERT INTO users VALUES (?, ?, ?, ?)");
-  // for (var i = 0; i < 10; i++) {
-  //   stmt.run("Ipsum " + i);
-  // }
-  // stmt.finalize();
-  //
-  // db.each("SELECT rowid AS id, info FROM lorem", function(err, row) {
-  //   console.log(row.id + ": " + row.info);
-  // });
-});
-
-db.close();
+var db = require('./config/database');
 
 console.log("export app");
 module.exports = app;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="dataSourceStorageLocal">
-    <data-source name="testDB.db" uuid="92ff86dd-72a8-49a3-b5a2-cc2de05e0e98">
+    <data-source name="studyplanner.sqlite" uuid="d9c8fb6a-33cd-45ca-ab05-cd9c578b83a3">
       <database-info product="SQLite" version="3.8.11" jdbc-version="2.1" driver-name="SQLiteJDBC" driver-version="native" />
       <case-sensitivity plain-identifiers="mixed" quoted-identifiers="mixed" />
       <secret-storage>master_key</secret-storage>
