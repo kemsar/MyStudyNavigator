@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>StudyPlanner - {{title}}</title>
+    {{>head}}
+  </head>
+  <body>
+    <div id="content">
+      <div id="app-content">
+          {{{body}}}
+      </div>
+    </div>
+  <script type="application/javascript">
+    $(document).ready(function () {
+
+      $('[data-toggle="tooltip"]').tooltip();
+
+      $.each($('.nav').find('li'), function() {
+        $(this).toggleClass('active',
+            $(this).find('a').attr('href') == window.location.pathname);
+      });
+
+    });
+  </script>
+  </body>
+</html>

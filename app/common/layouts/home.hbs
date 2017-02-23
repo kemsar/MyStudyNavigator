@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>StudyPlanner</title>
+    <title>MyStudyNavigator</title>
     {{>head}}
   </head>
   <body>
     <div id="content">
       {{>page_header}}
-      <div id="app-content">
+      <!--<div id="app-content">-->
           {{{body}}}
-      </div>
+      <!--</div>-->
       {{>page_footer}}
     </div>
   <script type="application/javascript">
@@ -21,6 +21,23 @@
         $(this).toggleClass('active',
             $(this).find('a').attr('href') == window.location.pathname);
       });
+
+      $('.carousel').carousel({
+        interval: 5000
+      });
+
+      // Highlight the top nav as scrolling occurs
+      $('body').scrollspy({
+        target: '.navbar-fixed-top',
+        offset: 51
+      });
+
+      // Offset for Main Navigation
+      $('#mainNav').affix({
+        offset: {
+          top: 100
+        }
+      })
 
     });
   </script>

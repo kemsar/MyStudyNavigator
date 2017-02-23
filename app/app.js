@@ -65,13 +65,17 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render(path.join(__dirname,'errors/error'));
+  res.render(path.join(__dirname,'errors/error'),{layout: 'layouts/error', title: 'Error'});
 });
 
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
 var db = require('./config/database');
-
+app.set('models', require('./common/models'));
 console.log("export app");
 module.exports = app;
+var User = app.get('models').User;
+User.findAll().then(function(users) {
+  console.log(users)
+})
