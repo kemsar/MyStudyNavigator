@@ -7,28 +7,38 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
+    "start": "electron .",
     "pack": "build --dir",
-    "dist": "build"
+    "dist": "build",
+    "rebuild": "electron-rebuild -f -w sqlite3",
+    "db-migrate": "sequelize db:migrate",
+    "db-migrate-undo": "sequelize db:migrate:undo",
+    "db-seed": "sequelize db:seed:all",
+    "db-seed-undo": "sequelize db:seed:undo:all"
   },
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "~1.16.0",
     "config": "^1.25.1",
+    "connect-session-sequelize": "^5.0.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.0",
+    "electron": "^1.7.9",
     "express": "~4.14.1",
+    "express-session": "^1.15.1",
     "hbs": "~4.0.1",
     "js-yaml": "^3.8.1",
     "morgan": "~1.7.0",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
     "sequelize": "^3.30.2",
+    "sequelize-cli": "^3.0.0",
     "serve-favicon": "~2.3.2",
-    "sqlite3": "^3.1.8"
+    "sqlite3": "^3.1.13"
   },
   "main": "main.js",
   "devDependencies": {
-    "electron-rebuild": "^1.5.7"
+    "electron-rebuild": "^1.6.0"
   },
   "build": {
     "appId": "org.sarsen.dev",

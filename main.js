@@ -18,7 +18,7 @@ function createWindow () {
   console.log("created app");
 
   // Create the browser window.
-  win = new BrowserWindow({width: 800, height: 600});
+  win = new BrowserWindow({width: 1024, height: 576});
   // win = new BrowserWindow();
 
   // and load the index.html of the app.

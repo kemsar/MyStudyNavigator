@@ -1,43 +1,74 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var hbs = require('hbs');
-var fs = require('fs');
+const express = require('express');
+const path = require('path');
+const favicon = require('serve-favicon');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const hbs = require('hbs');
+const fs = require('fs');
 
-var about = require('./about');
-var assignments = require('./user/tasks');
-var calendar = require('./user/calendar');
-var dashboard = require('./user/dashboard');
-var index = require('./home/index');
-var schedule = require('./user/schedule');
-var search = require('./user/search');
-var settings = require('./user/settings');
-var users = require('./services/users');
+const passport = require('passport');
+const session = require('express-session');
+const SequelizeStore = require('connect-session-sequelize')(session.Store);
+const about = require('./about');
+const assignments = require('./user/tasks');
+const calendar = require('./user/calendar');
+const dashboard = require('./user/dashboard');
+const login = require('./login');
+const index = require('./home/index');
+const schedule = require('./user/schedule');
+const search = require('./user/search');
+const settings = require('./user/settings');
+const users = require('./services/users');
 
-var app = express();
+const app = express();
 console.log("in app.js");
-// Block the header from containing information
-// about the server
+
+// Block the header from containing information about the server
 app.disable('x-powered-by');
 
-console.log("engine setup");
 // view engine setup
+console.log("engine setup");
 hbs.registerPartials(__dirname + '/common/partials');
 app.set('views', path.join(__dirname, 'common'));
 app.set('view engine', 'hbs');
 app.set('view options', { layout: '/layouts/main.hbs' });
+app.set('models', require(path.join(__dirname,'/db/models')));
+
+/*
+  Initialize authentication engine
+ */
+require('./authentication').init(app); //TODO: Implement Passport for authentication
+
+/*
+Session
+ */
+const db = require(path.join(__dirname,'/db/models'));
+const sessionStore = new SequelizeStore({ db: db.sequelize})
+
+app.use(session({
+  secret: 'keyboard cat',
+  store: sessionStore,
+  resave: false, // we support the touch method so per the express-session docs this should be set to false
+  proxy: false // if you do SSL outside of node.
+}))
+
+sessionStore.sync();
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+require('../config/passport.js')(passport, db.user);
 
 console.log("parsers, etc.");
-// uncomment after placing your favicon in /public
 app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
 
 console.log("routings and such");
 app.use('/about', about);
@@ -48,7 +79,7 @@ app.use('/', index);
 app.use('/user/schedule', schedule);
 app.use('/user/search', search);
 app.use('/user/settings', settings);
-// app.use('/user', users);
+app.use('/user', login);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -68,14 +99,40 @@ app.use(function(err, req, res, next) {
   res.render(path.join(__dirname,'errors/error'),{layout: 'layouts/error', title: 'Error'});
 });
 
+/*
+  Database setup
+ */
+// const db = require('./config/database');
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
-var db = require('./config/database');
-app.set('models', require('./common/models'));
+// db.sequelize.sync({force:false}, function(err){console.log(err);});
+//
+// db.sequelize.transaction(function(t){
+//   return db.user.findOrCreate({
+//     where:{
+//       id: 'admin'
+//     },
+//     defaults: {
+//       id: 'admin',
+//       name: 'Kevin Sarsen' ,
+//       email:'kevinsarsen@gmail.com',
+//       password: 'admin',
+//       createdAt: Date.now(),
+//       updatedAt: Date.now()
+//     },
+//     transaction: t
+//   })
+//   .spread(function(user, created) {
+//     // console.log(user.values)
+//     console.log(created)
+//   }) //end spread
+//   .catch ((e) => {
+//     console.log(e.errors)
+//   })
+// }); // end transaction
+
+// User.findAll().then(function(users) {
+//   console.log('Users found: ' + users)
+// })
+
 console.log("export app");
 module.exports = app;
-var User = app.get('models').User;
-User.findAll().then(function(users) {
-  console.log(users)
-})

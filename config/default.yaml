@@ -1,3 +1,6 @@
 database:
-  user:
-  password:
+  name: main
+  dialect: sqlite
+  user: dbuser
+  password: dbpwd
+  storage: app/db/db.sqlite
